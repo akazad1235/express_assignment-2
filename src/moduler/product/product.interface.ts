@@ -7,6 +7,7 @@ export type TInventory = {
   inStock: boolean;
 };
 
+//product type
 export type TProduct = {
   name: string;
   description: string;

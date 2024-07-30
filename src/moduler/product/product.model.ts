@@ -2,16 +2,22 @@ import { Schema, model } from 'mongoose';
 import { TProduct } from './product.interface';
 
 // Sub variant schema
-const variantSchema = new Schema({
-  type: { type: String, required: true },
-  value: { type: String, required: true },
-});
+const variantSchema = new Schema(
+  {
+    type: { type: String, required: true },
+    value: { type: String, required: true },
+  },
+  { _id: false }, //disable sub schema _id
+);
 
 // Sub inventory schema
-const inventorySchema = new Schema({
-  quantity: { type: Number, required: true },
-  inStock: { type: Boolean, required: true },
-});
+const inventorySchema = new Schema(
+  {
+    quantity: { type: Number, required: true },
+    inStock: { type: Boolean, required: true },
+  },
+  { _id: false }, //disable sub schema _id
+);
 // Product schema
 const productSchema = new Schema<TProduct>({
   name: { type: String, required: true },
@@ -21,6 +27,13 @@ const productSchema = new Schema<TProduct>({
   tags: { type: [String], required: true },
   variants: { type: [variantSchema], required: true },
   inventory: { type: inventorySchema, required: true },
+});
+// Customize the toJSON method to exclude __v
+productSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.__v;
+    return ret;
+  },
 });
 
 export const Product = model<TProduct>('Product', productSchema);
