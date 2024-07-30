@@ -18,9 +18,19 @@ const getSingleProductFromDB = async (productId: string) => {
   const product = await Product.findOne({ _id: Object(productId) });
   return product;
 };
+// update product information
+const updateProductFromDB = async (productId: string, updateData: object) => {
+  const product = await Product.findByIdAndUpdate(
+    { _id: Object(productId) },
+    { $set: updateData },
+    { new: true },
+  );
+  return product;
+};
 // expert all service method
 export const ProductServices = {
   createProductIntoDB,
   getAllProductFromDB,
   getSingleProductFromDB,
+  updateProductFromDB,
 };
