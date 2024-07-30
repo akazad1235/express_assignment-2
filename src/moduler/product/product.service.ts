@@ -13,8 +13,14 @@ const getAllProductFromDB = async () => {
   const products = await Product.find();
   return products;
 };
+// get single product
+const getSingleProductFromDB = async (productId: string) => {
+  const product = await Product.findOne({ _id: Object(productId) });
+  return product;
+};
 // expert all service method
 export const ProductServices = {
   createProductIntoDB,
   getAllProductFromDB,
+  getSingleProductFromDB,
 };
