@@ -1,21 +1,19 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ProductServices } from './product.service';
+import { validateProductSchema } from './product.validate';
 
-const createProduct = async (req: Request, res: Response) => {
+const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const formData = req.body;
-    const result = await ProductServices.createProductIntoDB(formData);
+    const validateData = validateProductSchema.parse(formData);
+    const result = await ProductServices.createProductIntoDB(validateData);
     res.status(200).json({
       success: true,
       message: 'Product has been created successfully!',
       data: result,
     });
   } catch (err) {
-    res.status(200).json({
-      success: false,
-      message: 'Something went wrong!',
-      data: err,
-    });
+    next(err);
   }
 };
 // get all products
