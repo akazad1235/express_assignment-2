@@ -2,6 +2,7 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { ProductRoutes } from './moduler/product/product.route';
 import { OrderRouter } from './moduler/order/order.route';
+import z from 'zod';
 
 const app: Application = express();
 
@@ -15,18 +16,19 @@ app.use(cors());
 app.use('/api/products', ProductRoutes);
 app.use('/api/orders', OrderRouter);
 
-app.all('*', (req: Request, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-  });
-});
-
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  res.status(400).json({
-    success: false,
-    message: error.message || 'something working',
-  });
+  if (error instanceof z.ZodError) {
+    // If it's a Zod validation error
+    res.status(400).json({
+      success: false,
+      message: error.errors, // Detailed validation errors
+    });
+  } else {
+    res.status(400).json({
+      success: false,
+      message: error.message || 'something working',
+    });
+  }
 });
 
 export default app;
