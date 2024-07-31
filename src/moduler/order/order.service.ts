@@ -8,17 +8,32 @@ const createOrderIntoDB = async (orderData: TOrder) => {
   const product = await Product.findOne({ _id: productId });
 
   // check product grater than 0
-  if (!product || product?.available <= 0) {
+  if (!product || product?.inventory?.quantity <= 0) {
     throw new Error('Product not available!');
   }
-  // check product available grater than or equal quantity
-  if (!product || product?.available <= quantity) {
-    throw new Error(`Our Product  available only ${product?.available}`);
+  // check product quantity grater than or equal
+  if (!product || product?.inventory?.quantity < quantity) {
+    throw new Error(`Our Product  available only ${product?.inventory?.quantity}`);
   }
   const order = new Order(orderData);
   const result = await order.save();
-  // product update available quantity
-  await Product.updateOne({ _id: productId }, { $inc: { available: -quantity } }); // Decrease the available quantity by the order quantity
+  // Update the product
+  const updateProduct = await Product.findByIdAndUpdate(
+    { _id: productId },
+    {
+      $inc: { 'inventory.quantity': -quantity }, // Decrement quantity
+    },
+    { new: true },
+  );
+  // inventory inStock set false when product quantity will be 0
+  if (updateProduct?.inventory?.quantity == 0) {
+    await Product.findOne(
+      { _id: productId },
+      {
+        $set: { 'inventory.inStock': false },
+      },
+    );
+  }
   return result;
 };
 // get all order into db

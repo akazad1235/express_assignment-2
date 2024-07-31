@@ -27,8 +27,6 @@ const productSchema = new Schema<TProduct>({
   tags: { type: [String], required: true },
   variants: { type: [variantSchema], required: true },
   inventory: { type: inventorySchema, required: true },
-  available: { type: Number, required: true, default: 0 },
-  isAvailable: { type: Boolean, default: false },
   isDeleted: { type: Boolean, default: false },
 });
 // Customize the toJSON method to exclude __v

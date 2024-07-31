@@ -23,11 +23,5 @@ export const validateProductSchema = z.object({
     .array(validateVariantSchema)
     .nonempty({ message: 'At least one variant is required.' }),
   inventory: validateInventorySchema,
-  available: z
-    .number()
-    .int()
-    .nonnegative({ message: 'Available must be a non-negative integer.' })
-    .default(0),
-  isAvailable: z.boolean().default(false),
   isDeleted: z.boolean().default(false),
 });
