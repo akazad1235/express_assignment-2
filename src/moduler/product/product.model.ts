@@ -37,4 +37,10 @@ productSchema.set('toJSON', {
   },
 });
 
+// Query Middleware
+productSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
 export const Product = model<TProduct>('Product', productSchema);
