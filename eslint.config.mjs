@@ -26,7 +26,7 @@ export default [
       'no-unused-vars': 'error',
       'no-unused-expressions': 'error',
       'no-undef': 'error', // Disallow undefined variables
-      'prettier/prettier': 'error',
+      'prettier/prettier': ['error', { endOfLine: 'lf' }],
     },
     ignores: ['node_modules', 'dist'],
   },
