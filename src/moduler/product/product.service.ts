@@ -10,8 +10,15 @@ const createProductIntoDB = async (productData: TProduct) => {
 };
 
 // get all products
-const getAllProductFromDB = async () => {
-  const products = await Product.find();
+const getAllProductFromDB = async (payload: Record<string, unknown>) => {
+  let searchTerm = '';
+  if (payload?.searchTerm) {
+    searchTerm = payload.searchTerm as string;
+  }
+  // if searchTerm/query have empty it's get all product otherwise expected products are get.
+  const products = await Product.find({
+    $or: [{ name: { $regex: `\\b${searchTerm}\\b`, $options: 'i' } }],
+  }); // Case-insensitive search
   return products;
 };
 
@@ -38,10 +45,19 @@ const deleteProductFromDB = async (productId: string) => {
 };
 
 //search product
-const searchProductFromDB = async (name: string) => {
-  const products = await Product.find({ name: new RegExp(name, 'i') }); // Case-insensitive search
-  return products;
-};
+// const searchProductFromDB = async (payload: Record<string, unknown>) => {
+//   let searchTerm = '';
+//   if (payload?.searchTerm) {
+//     searchTerm = payload.searchTerm as string;
+//   }
+//   const searchAbleFields = ['name'];
+//   const searchedProduct = await Product.find({
+//     $or: searchAbleFields.map((field) => ({
+//       [field]: { $regex: searchTerm, $options: 'i' },
+//     })),
+//   });
+//   return searchedProduct;
+// };
 
 // expert all service method
 export const ProductServices = {
@@ -50,5 +66,4 @@ export const ProductServices = {
   getSingleProductFromDB,
   updateProductFromDB,
   deleteProductFromDB,
-  searchProductFromDB,
 };
