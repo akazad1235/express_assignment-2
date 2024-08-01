@@ -16,6 +16,7 @@ app.use(cors());
 app.use('/api/products', ProductRoutes);
 app.use('/api/orders', OrderRouter);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof z.ZodError) {
     // If it's a Zod validation error
@@ -29,6 +30,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
       message: error.message || 'something working',
     });
   }
+  next();
 });
 
 export default app;

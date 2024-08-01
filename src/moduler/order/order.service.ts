@@ -9,11 +9,13 @@ const createOrderIntoDB = async (orderData: TOrder) => {
 
   // check product grater than 0
   if (!product || product?.inventory?.quantity <= 0) {
-    throw new Error('Product not available!');
+    throw new Error('Insufficient quantity available in inventory!');
   }
   // check product quantity grater than or equal
   if (!product || product?.inventory?.quantity < quantity) {
-    throw new Error(`Our Product  available only ${product?.inventory?.quantity}`);
+    throw new Error(
+      `Insufficient quantity available in inventory.  available only ${product?.inventory?.quantity}`,
+    );
   }
   const order = new Order(orderData);
   const result = await order.save();
@@ -42,6 +44,9 @@ const getAllOrderIntoDB = async (payload: Record<string, unknown>) => {
   if (payload?.email) {
     const email = payload.email as string;
     const orders = await Order.find({ email: email });
+    if (orders.length == 0) {
+      throw new Error('Order not found!');
+    }
     return orders;
   } else {
     const orders = await Order.find();
