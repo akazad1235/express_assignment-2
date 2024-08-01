@@ -16,7 +16,30 @@ app.use(cors());
 app.use('/api/products', ProductRoutes);
 app.use('/api/orders', OrderRouter);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.get('/', (req: Request, res: Response) => {
+  try {
+    res.status(200).json({
+      success: true,
+      message: 'server connected success',
+      data: null,
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      message: error,
+      data: null,
+    });
+  }
+});
+
+//route not fund handler
+app.all('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
+
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof z.ZodError) {
     // If it's a Zod validation error
