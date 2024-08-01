@@ -42,5 +42,18 @@ productSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
+// Query Middleware
+productSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
+
+// Exclude isDeleted from JSON response
+productSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.isDeleted;
+    return ret;
+  },
+});
 
 export const Product = model<TProduct>('Product', productSchema);

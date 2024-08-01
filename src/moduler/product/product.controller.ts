@@ -34,29 +34,25 @@ const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 // get single product by product id
-const getSingleProduct = async (req: Request, res: Response) => {
-  const { productId } = req.params;
-  const result = await ProductServices.getSingleProductFromDB(productId);
+const getSingleProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const { productId } = req.params;
+    const result = await ProductServices.getSingleProductFromDB(productId);
     res.status(200).json({
       success: true,
       message: 'Product fetched successfully!',
       data: result,
     });
   } catch (err) {
-    res.status(200).json({
-      success: false,
-      message: 'Something went wrong!',
-      data: err,
-    });
+    next(err);
   }
 };
 // update single product
 const updateSingleProduct = async (req: Request, res: Response) => {
-  const { productId } = req.params;
-  const updateData = req.body;
-  const result = await ProductServices.updateProductFromDB(productId, updateData);
   try {
+    const { productId } = req.params;
+    const updateData = req.body;
+    const result = await ProductServices.updateProductFromDB(productId, updateData);
     res.status(200).json({
       success: true,
       message: 'Product update successfully!',

@@ -9,7 +9,7 @@ const createOrderIntoDB = async (orderData: TOrder) => {
 
   // check product grater than 0
   if (!product || product?.inventory?.quantity <= 0) {
-    throw new Error('Insufficient quantity available in inventory!');
+    throw new Error('Product not found!');
   }
   // check product quantity grater than or equal
   if (!product || product?.inventory?.quantity < quantity) {

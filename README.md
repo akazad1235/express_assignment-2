@@ -23,33 +23,70 @@ Objective: Develop a Express js project. Using Typescript, express js, mongoDB w
 4. npm run format (for prettier)
 5. npm run build (compile typescript to js)
 
+---
+
 ### Api endpoints
 
 ##### Product Management
 
-1.  Create a New Product - Endpoint: /api/products - Method: POST - Sample Request Body:
-    ```json
-    {
+1.  Create a New Product
+
+- Endpoint: /api/products
+- Method: POST
+- Sample Request Body:
+
+  ```json
+  {
     "name": "iPhone 13",
     "description": "A sleek and powerful smartphone with cutting-edge features.",
     "price": 999,
     "category": "Electronics",
     "tags": ["smartphone", "Apple", "iOS"],
     "variants": [
-    {
-    "type": "Color",
-    "value": "Midnight Blue"
-    },
-    {
-    "type": "Storage Capacity",
-    "value": "256GB"
-    }
+      {
+        "type": "Color",
+        "value": "Midnight Blue"
+      },
+      {
+        "type": "Storage Capacity",
+        "value": "256GB"
+      }
     ],
     "inventory": {
-    "quantity": 50,
-    "inStock": true
+      "quantity": 50,
+      "inStock": true
     }
-    }
-    ```
+  }
+  ```
 
-    ```
+  - sample response
+
+  ```json
+  {
+    "success": true,
+    "message": "Product has been created successfully!",
+    "data": {
+      "name": "HP laptop",
+      "description": "This is a sample product description.",
+      "price": 29.99,
+      "category": "Sample Category",
+      "tags": ["electronics", "laptop", "computer"],
+      "variants": [
+        {
+          "type": "color",
+          "value": "red"
+        },
+        {
+          "type": "size",
+          "value": "14"
+        }
+      ],
+      "inventory": {
+        "quantity": 100,
+        "inStock": true
+      },
+      "isDeleted": false,
+      "_id": "66ab275ed743a6b4b174f97e"
+    }
+  }
+  ```

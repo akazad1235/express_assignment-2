@@ -25,6 +25,9 @@ const getAllProductFromDB = async (payload: Record<string, unknown>) => {
 // get single product
 const getSingleProductFromDB = async (productId: string) => {
   const product = await Product.findOne({ _id: Object(productId) });
+  if (!product) {
+    throw new Error('product not found');
+  }
   return product;
 };
 
