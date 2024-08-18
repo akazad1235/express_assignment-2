@@ -1,6 +1,8 @@
 # batch-3-express_assignment-2
 
 Objective: Develop a Express js project. Using Typescript, express js, mongoDB with mongoose. I also used code checker and formatter eslint & prettier
+[[ https://assignment2-one-delta.vercel.app/ ]]
+
 
 ### Install the project, follow these steps:
 
